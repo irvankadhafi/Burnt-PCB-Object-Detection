@@ -1,4 +1,6 @@
 # BurnoutObjectDetection
+This model was trained with state-of-the-art objection detection algorithm which is SSD with EfficientNet-b0 + BiFPN feature extractor a.k.a EfficientDet (you can read the paper here https://arxiv.org/abs/1708.02002). To be precise, we use EfficientDet D0 512x512 as the pretrained model.
+
 ![alt text](screnshot/ss1.png)
 
 ### Clone Project 
