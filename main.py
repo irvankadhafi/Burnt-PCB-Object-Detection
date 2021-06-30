@@ -23,8 +23,8 @@ frame_id = 0
 
 def load_model():
     # Lokasi Labelmap dan Frozen saved export
-    PATH_TO_LABELS = os.path.join('export', 'labelmap.pbtxt')
-    PATH_TO_SAVED_MODEL = os.path.join('export', 'saved_model')
+    PATH_TO_LABELS = os.path.join('freezed_model', 'labelmap.pbtxt')
+    PATH_TO_SAVED_MODEL = os.path.join('freezed_model', 'saved_model')
 
     global category_index
     global detection_model
