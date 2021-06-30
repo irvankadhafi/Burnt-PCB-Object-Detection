@@ -2,6 +2,9 @@ import os
 import sys
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+# Path Splitting for Linux and Windows
+# (: on Linux-like systems, ; on Windows)
+os.environ['PYTHONPATH'] += '/home/irvan/anaconda3/tfod-api:/home/irvan/anaconda3/tfod-api/research:/home/irvan/anaconda3/tfod-api/research/slim'
 import time
 
 import tensorflow as tf
