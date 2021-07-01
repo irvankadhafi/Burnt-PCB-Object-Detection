@@ -85,20 +85,20 @@ def run_inference(model, cap):
         #   new_scores =  np.extract(output_dict['detection_scores']>0.1,output_dict['detection_scores'])
         #   output_dict['detection_scores'] = new_scores
         # Visualization of the results of a detection.
-        if True:
-            vis_util.visualize_boxes_and_labels_on_image_array(
-                image_np,
-                output_dict['detection_boxes'],
-                output_dict['detection_classes'],
-                output_dict['detection_scores'],
-                category_index,
-                instance_masks=output_dict.get('detection_masks_reframed', None),
-                use_normalized_coordinates=True,
-                min_score_thresh=.8,
-                line_thickness=8)
+        vis_util.visualize_boxes_and_labels_on_image_array(
+            image_np,
+            output_dict['detection_boxes'],
+            output_dict['detection_classes'],
+            output_dict['detection_scores'],
+            category_index,
+            instance_masks=output_dict.get('detection_masks_reframed', None),
+            use_normalized_coordinates=True,
+            min_score_thresh=.5,  # default = 0.5
+            line_thickness=8)
 
         elapsed_time = time.time() - starting_time
         fps = frame_id / elapsed_time
+        # Print FPS
         cv2.putText(image_np, "FPS:" + str(round(fps, 2)), (10, 50), font, 2, (0, 0, 0), 1)
         # Saving inference image
         timestr = time.strftime("%Y%m%d-%H%M%S")
