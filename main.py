@@ -7,12 +7,17 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 import tensorflow as tf
 import cv2
 import numpy as np
-from matplotlib import pyplot as plt
-from PIL import Image
 
 from object_detection.utils import ops as utils_ops
 from object_detection.utils import label_map_util
 from object_detection.utils import visualization_utils as vis_util
+
+print("TF version:", tf.__version__)
+if tf.config.list_physical_devices('GPU'):
+    print("GPU is available",'\n')
+    print(tf.config.list_physical_devices('GPU'))
+else:
+    print("GPU is not available", '\n')
 
 # loading image
 video_path = os.path.join('test.mp4')
@@ -31,7 +36,10 @@ def load_model():
     global detection_model
 
     category_index = label_map_util.create_category_index_from_labelmap(PATH_TO_LABELS, use_display_name=True)
+    print('loading model...')
     detection_model = tf.saved_model.load(str(PATH_TO_SAVED_MODEL))
+    print('model loaded!')
+
     # Use a breakpoint in the code line below to debug your script.
     # print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
 
