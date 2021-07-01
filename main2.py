@@ -52,4 +52,33 @@ def show_mpl_img_with_detections(img, dets, scores,
     # To use common color of one class and different for different classes
     colors = dict()
     # iterate over all proposed bbox
-    # choo
+    # choose whichever is more than a threshold
+    for i in range(dets.shape[0]):
+        cls_id = int(classes[i])
+    # in case of any wrong prediction for class index
+            if cls_id >= 0:
+                score = scores[i]
+            # score for a detection is more than a threshold
+            if score > thres:
+                if cls_id not in colors:
+                    colors[cls_id] = (random.random(),
+                                      random.random(),
+                                      random.random())
+            xmin = int(dets[i, 1] * width)
+            ymin = int(dets[i, 0] * height)
+            xmax = int(dets[i, 3] * width)
+            ymax = int(dets[i, 2] * height)
+            rect = plt.Rectangle((xmin, ymin), xmax - xmin,
+                                 ymax - ymin, fill=False,
+                                 edgecolor=colors[cls_id],
+                                 linewidth=2.5)
+            plt.gca().add_patch(rect)
+            # to plot class name and score around each detection box
+            class_name = str(category_index[cls_id]['name'])
+            plt.gca().text(xmin, ymin - 2,
+                           '{:s} {:.3f}'.format(class_name, score),
+                           bbox=dict(facecolor=colors[cls_id], alpha=0.5),
+                           fontsize=8, color='white')
+            plt.axis('off')
+            plt.show()
+            return

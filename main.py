@@ -94,11 +94,17 @@ def run_inference(model, cap):
                 category_index,
                 instance_masks=output_dict.get('detection_masks_reframed', None),
                 use_normalized_coordinates=True,
+                min_score_thresh=.8,
                 line_thickness=8)
 
         elapsed_time = time.time() - starting_time
         fps = frame_id / elapsed_time
         cv2.putText(image_np, "FPS:" + str(round(fps, 2)), (10, 50), font, 2, (0, 0, 0), 1)
+        # Saving inference image
+        timestr = time.strftime("%Y%m%d-%H%M%S")
+        output_path_inference=os.path.join('output_inference', timestr+'.jpg')
+        cv2.imwrite(output_path_inference, image_np)
+        # Opening opencv window app
         cv2.imshow('object_detection', cv2.resize(image_np, (800, 600)))
         if cv2.waitKey(25) & 0xFF == ord('q'):
             cap.release()
