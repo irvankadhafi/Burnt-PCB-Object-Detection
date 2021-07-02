@@ -2,6 +2,7 @@
 ___
 This model was trained with state-of-the-art objection detection algorithm which is SSD with EfficientNet-b0 + BiFPN feature extractor a.k.a EfficientDet (you can read the paper here https://arxiv.org/abs/1911.09070). To be precise, we use EfficientDet D0 512x512 as the pretrained model. We only used 81 data of pcb image burnt to train the model and split those data into 65 train set, 8 validation set, and 8 test set.
 
+The technology that we used is Tensorflow 2.
 
 ![alt text](screenshot/ss1.png)
 ___
