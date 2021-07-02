@@ -4,27 +4,24 @@ import time
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
-# Path Splitting for Linux and Windows
-# (: on Linux-like systems, ; on Windows)
-# if os.name == 'nt':
-#     os.environ['PYTHONPATH'] += './tfod-api;./tfod-api/research;./tfod-api/research/slim'
-# if os.name == 'posix':
-#     # os.environ['PYTHONPATH'] += '/home/irvan/PycharmProjects/BurnoutObjectDetection/tfod_api:/home/irvan/PycharmProjects/BurnoutObjectDetection/tfod_api/research:/home/irvan/PycharmProjects/BurnoutObjectDetection/tfod_api/research/slim'
-#     os.environ['PYTHONPATH'] += './tfod-api:./tfod-api/research:./tfod-api/research/slim'
-
-sys.path.append('./tfod-api:./tfod-api/research:./tfod-api/research/slim')
 import tensorflow as tf
 import cv2
 import numpy as np
-from matplotlib import pyplot as plt
-from PIL import Image
 
 from object_detection.utils import ops as utils_ops
 from object_detection.utils import label_map_util
 from object_detection.utils import visualization_utils as vis_util
 
+print("TF version:", tf.__version__)
+if tf.config.list_physical_devices('GPU'):
+    print("GPU is available",'\n')
+    print(tf.config.list_physical_devices('GPU'))
+else:
+    print("GPU is not available", '\n')
+
 # loading image
-cap = cv2.VideoCapture('/home/irvan/test.mp4')  # or cap = cv2.VideoCapture("<video-path>")
+video_path = os.path.join('test.mp4')
+cap = cv2.VideoCapture(video_path)  # or cap = cv2.VideoCapture("<video-path>")
 font = cv2.FONT_HERSHEY_PLAIN
 starting_time = time.time()
 frame_id = 0
@@ -39,7 +36,10 @@ def load_model():
     global detection_model
 
     category_index = label_map_util.create_category_index_from_labelmap(PATH_TO_LABELS, use_display_name=True)
+    print('loading model...')
     detection_model = tf.saved_model.load(str(PATH_TO_SAVED_MODEL))
+    print('model loaded!')
+
     # Use a breakpoint in the code line below to debug your script.
     # print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
 
@@ -93,25 +93,32 @@ def run_inference(model, cap):
         #   new_scores =  np.extract(output_dict['detection_scores']>0.1,output_dict['detection_scores'])
         #   output_dict['detection_scores'] = new_scores
         # Visualization of the results of a detection.
-        if True:
-            vis_util.visualize_boxes_and_labels_on_image_array(
-                image_np,
-                output_dict['detection_boxes'],
-                output_dict['detection_classes'],
-                output_dict['detection_scores'],
-                category_index,
-                instance_masks=output_dict.get('detection_masks_reframed', None),
-                use_normalized_coordinates=True,
-                line_thickness=8)
+        vis_util.visualize_boxes_and_labels_on_image_array(
+            image_np,
+            output_dict['detection_boxes'],
+            output_dict['detection_classes'],
+            output_dict['detection_scores'],
+            category_index,
+            instance_masks=output_dict.get('detection_masks_reframed', None),
+            use_normalized_coordinates=True,
+            min_score_thresh=.5,  # default = 0.5
+            line_thickness=8)
 
         elapsed_time = time.time() - starting_time
         fps = frame_id / elapsed_time
+        # Print FPS
         cv2.putText(image_np, "FPS:" + str(round(fps, 2)), (10, 50), font, 2, (0, 0, 0), 1)
+        # Saving inference image
+        timestr = time.strftime("%Y%m%d-%H%M%S")
+        output_path_inference=os.path.join('output_inference', timestr+'.jpg')
+        cv2.imwrite(output_path_inference, image_np)
+        # Opening opencv window app
         cv2.imshow('object_detection', cv2.resize(image_np, (800, 600)))
         if cv2.waitKey(25) & 0xFF == ord('q'):
             cap.release()
             cv2.destroyAllWindows()
             break
+
 
 if __name__ == '__main__':
     load_model()

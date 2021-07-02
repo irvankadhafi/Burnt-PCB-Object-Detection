@@ -6,24 +6,13 @@ The technology that we used is Tensorflow 2.
 
 ![alt text](screenshot/ss1.png)
 ___
-### Clone Project 
+## Steps
+### 1. Clone Project 
 ```bash
-git clone --recursive https://github.com/irvankadhafi/BurnoutObjectDetection.git
+git clone --recursive https://github.com/irvankadhafi/Burnt-PCB-Object-Detection.git
 ```
-
-
-### Set Environment Variable (Windows : Administrator CMD)
-```bash
-set PYTHONPATH=<absolute-project-path>\tfod-api;<absolute-project-path>\tfod-api\research;<absolute-project-path>\tfod-api\research\slim
-```
-
-### Set Environment Variable (Linux)
-```bash
-export PYTHONPATH=<absolute-project-path>/tfod-api:<absolute-project-path>/tfod-api/research:<absolute-project-path>/tfod-api/research/slim
-```
-
-### How to make virtual environment (required python3 ):
 ___
+### 2. Make virtual environment (required python>=3.7 ):
 #### Running this command in this project folder
 ```bash
 python -m venv ./venv
@@ -37,6 +26,65 @@ source venv/bin/activate
 _Windows_ (Using CMD in project folder)
 ```bash
 venv\Scripts\activate.bat
+```
+___
+### 3. Install requirements.txt (in project directory)
+```bash
+pip install -r requirements.txt
+```
+___
+### 4. Set Environment Variable (choose one)
+- Windows : Administrator CMD
+```bash
+set PYTHONPATH=<absolute-project-path>\tfod-api;<absolute-project-path>\tfod-api\research;<absolute-project-path>\tfod-api\research\slim
+```
+
+- Linux : Bash
+```bash
+export PYTHONPATH=<absolute-project-path>/tfod-api:<absolute-project-path>/tfod-api/research:<absolute-project-path>/tfod-api/research/slim
+```
+
+- PyCharm
+```
+File | Settings | Project: BurnoutObjectDetectio... | Python Interpreter
+```
+![alt text](screenshot/ss2.png)
+```
+Click "Show All"
+```
+Lalu tambahkan path tfod_api
+![alt text](screenshot/ss3.png)
+![alt text](screenshot/ss4.png)
+![alt text](screenshot/ss5.png)
+___
+### 5. Installing Tensorflow Object Detection API
+Sources :
+- https://www.geeksforgeeks.org/ml-training-image-classifier-using-tensorflow-object-detection-api/
+- https://blog.tensorflow.org/2021/01/custom-object-detection-in-browser.html
+- https://gilberttanner.com/blog/tensorflow-object-detection-with-tensorflow-2-creating-a-custom-model
+
+1. Masuk ke folder `tfod_api/research`
+2. Compile protos. <br> 
+Buat use_protobuf.py pada folder ``research``
+```python
+import os
+import sys
+args = sys.argv
+directory = args[1]
+protoc_path = args[2]
+for file in os.listdir(directory):
+    if file.endswith(".proto"):
+        os.system(protoc_path+" "+directory+"/"+file+" --python_out=.")
+```
+3. Jalankan use_protobuf.py yang ada pada folder ``research``
+```bash
+python use_protobuf.py  .\object_detection\protos\ <path to protoc file>
+```
+``<path to protoc file> `` merupakan folder letak protobuf, pada linux yaitu ``/bin/protoc``, pada windows bisa didownload dari https://github.com/protocolbuffers/protobuf/releases lalu di extract di tempat bebas.
+4. Finishing Installing TFOD API (current diretory : `research`)
+```bash
+cp object_detection/packages/tf2/setup.py .
+python -m pip install .
 ```
 ___
 ### Video that used to test
