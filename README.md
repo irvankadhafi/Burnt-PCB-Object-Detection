@@ -63,9 +63,9 @@ Sources :
 - https://blog.tensorflow.org/2021/01/custom-object-detection-in-browser.html
 - https://gilberttanner.com/blog/tensorflow-object-detection-with-tensorflow-2-creating-a-custom-model
 
-1. Masuk ke folder `tfod_api/research`
+1. Go to `tfod_api/research` folder
 2. Compile protos. <br> 
-Buat use_protobuf.py pada folder ``research``
+Create use_protobuf.py in ``research`` folder
 ```python
 import os
 import sys
@@ -76,11 +76,11 @@ for file in os.listdir(directory):
     if file.endswith(".proto"):
         os.system(protoc_path+" "+directory+"/"+file+" --python_out=.")
 ```
-3. Jalankan use_protobuf.py yang ada pada folder ``research``
+3. Run use_protobuf.py that inside ``research`` folder
 ```bash
 python use_protobuf.py  .\object_detection\protos\ <path to protoc file>
 ```
-``<path to protoc file> `` merupakan folder letak protobuf, pada linux yaitu ``/bin/protoc``, pada windows bisa didownload dari https://github.com/protocolbuffers/protobuf/releases lalu di extract di tempat bebas.
+``<path to protoc file> `` is a folder where protobuf exist, on linux is ``/bin/protoc``, on windows you can download here https://github.com/protocolbuffers/protobuf/releases and then extract them.
 4. Finishing Installing TFOD API (current diretory : `research`)
 ```bash
 cp object_detection/packages/tf2/setup.py .
