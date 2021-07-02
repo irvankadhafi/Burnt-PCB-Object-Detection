@@ -52,7 +52,7 @@ File | Settings | Project: BurnoutObjectDetectio... | Python Interpreter
 ```
 Click "Show All"
 ```
-Lalu tambahkan path tfod_api
+And the add tfod_api path
 ![alt text](screenshot/ss3.png)
 ![alt text](screenshot/ss4.png)
 ![alt text](screenshot/ss5.png)
